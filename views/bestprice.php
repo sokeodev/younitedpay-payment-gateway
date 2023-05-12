@@ -66,7 +66,7 @@
 
                                 <?php foreach ($possible_prices as $maturity => $maturity_v) { ?>
                                     <span id="maturity-info-<?php echo esc_html($maturity); ?>" class="maturity-info big-text bold-text" style="display:none">
-                                        <?php echo $maturity_v["monthly_installment_amount_html"] ?>
+                                        <?php echo esc_html($maturity_v["monthly_installment_amount_html"]); ?>
                                     </span>
                                 <?php } ?>
                                 <span>/ <?php echo esc_html__('month', WC_YOUNITEDPAY_GATEWAY_LANG); ?></span>

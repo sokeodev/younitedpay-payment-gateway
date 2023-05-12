@@ -411,11 +411,9 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
 
         if(!$ajax){
             wp_enqueue_script('younitedpay_bestprice_js', plugins_url('../assets/js/younitedpay_bestprice.js', __FILE__), array('jquery'));
-            wp_register_style('bestprice',      plugins_url('../assets/css/bestprice.css', __FILE__));
-            wp_enqueue_style('bestprice');
+            wp_register_style('younitedpay_bestprice',      plugins_url('../assets/css/younitedpay_bestprice.css', __FILE__));
+            wp_enqueue_style('younitedpay_bestprice');
         }
-
-        wp_enqueue_script('younitedpay_bestprice_modal_js', plugins_url('../assets/js/younitedpay_bestprice_modal.js', __FILE__), array('jquery'));
     }
 
     /**
@@ -487,8 +485,8 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         if (!$this->is_payment_visible()) {
             return;
         }
-        wp_register_style('checkout', plugins_url('../assets/css/checkout.css', __FILE__));
-        wp_enqueue_style('checkout');
+        wp_register_style('younitedpay_checkout', plugins_url('../assets/css/younitedpay_checkout.css', __FILE__));
+        wp_enqueue_style('younitedpay_checkout');
         wp_enqueue_script('younitedpay_js', plugins_url('../assets/js/younitedpay.js', __FILE__), array('jquery'));
     }
 
@@ -661,7 +659,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         return (!isset($_GET['action']) || sanitize_text_field($_GET['action']) !== 'edit');
     }
 
-    function order_scripts()
+    public function order_scripts()
     {
         if ($this->is_not_action_edit()) {
             return;
@@ -709,7 +707,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
 <?php
     }
 
-    function order_contract_reference_notice()
+    public function order_contract_reference_notice()
     {
         if ($this->is_not_action_edit()) {
             return;
