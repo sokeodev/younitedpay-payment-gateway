@@ -1,0 +1,137 @@
+<?php
+
+namespace Younitedpay\WcYounitedpayGateway;
+
+use Younitedpay\WcYounitedpayGateway\WcYounitedpayLogger;
+
+/**
+ * class WcYounitedpayUtils {
+ */
+class WcYounitedpayUtils {
+
+    public function __construct(){
+
+    }
+
+    public static function render(string $name, array $args = []) {
+        extract($args);
+		$file = WC_YOUNITEDPAY_PLUGIN_DIR . "views/$name.php";
+
+        if(!in_array($name, array("bestprice","config","faq","home","menu","payment","support"))){
+            echo "";
+        }else{
+            ob_start();
+            include($file);
+            //the datas of the templates in the directory 'views' are escaped
+            echo ob_get_clean();
+        }
+    }
+
+    public static function get_ip(){
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
+
+
+    /*
+    * Get possible prices depending on amount and on $this->possible_maturities
+    */
+    public static function get_possible_prices( $best_price, $maturities ) {
+
+        $possible_prices = [];
+
+        if ( $best_price ) {
+            foreach ( $best_price as $price ) {
+                if ( in_array( $price['maturityInMonths'], $maturities ) ) {
+                    $possible_prices[$price['maturityInMonths']] = [
+                        'requested_amount' => $price['requestedAmount'],
+                        'requested_amount_html' => (number_format($price['requestedAmount'], '2', ',', ' ') . '€'),
+                        'annual_percentage_rate' => $price['annualPercentageRate'],
+                        'annual_percentage_rate_html' => (($price['annualPercentageRate'] * 100) . '%'),
+                        'annual_debit_rate' => $price['annualDebitRate'],
+                        'annual_debit_rate_html' => (($price['annualDebitRate'] * 100) . '%'),
+                        'monthly_installment_amount' => $price['monthlyInstallmentAmount'],
+                        'monthly_installment_amount_html' => (number_format($price['monthlyInstallmentAmount'], '2', ',', ' ') . '€'),
+                        'credit_total_amount' => $price['creditTotalAmount'],
+                        'credit_total_amount_html' => (number_format($price['creditTotalAmount'], '2', ',', ' ') . '€'),
+                        'credit_amount_to_fund' => $price['creditAmountToFund'],
+                        'credit_amount_to_fund_html' => (number_format($price['creditAmountToFund'], '2', ',', ' ') . '€'),
+                        'maturity_in_months' => $price['maturityInMonths'],
+                        'maturity_in_months_html' => $price['maturityInMonths'] . ' mois',
+                        'interests_total_amount' => $price['interestsTotalAmount'],
+                        'interests_total_amount_html' => (number_format($price['interestsTotalAmount'], '2', ',', ' ') . '€'),
+                    ];
+                }
+            }
+        }
+
+        return $possible_prices;
+    }
+
+    public static function load_textdomain(){
+        //Gestion de la langue depuis l'administration
+        //En stand by pour le moment
+        /*if(is_admin()){
+          $settings = get_option("woocommerce_younitedpay-gateway_settings");
+            if($settings && !empty($settings['language_admin'])){
+                $current_lang = $settings['language_admin'];
+            }
+        }*/
+
+        $locale_arr = explode('_', get_locale());
+        if(count($locale_arr) != 2){
+            return;
+        }
+
+        $pref_lang = $locale_arr[0];
+        if($pref_lang == "fr" ){
+            $current_lang = "fr_FR";
+        }elseif($pref_lang == "es"){
+            $current_lang = "es_ES";
+        }else{
+            return;
+        }
+
+        load_textdomain( WC_YOUNITEDPAY_GATEWAY_LANG, plugin_dir_path( __FILE__ ).'/../languages/'.WC_YOUNITEDPAY_GATEWAY_LANG.'-'.$current_lang.'.mo', $current_lang);
+    }
+
+    public static function validate_webhook($webhook_secure_key){
+        try{
+            if(empty($webhook_secure_key)){
+                WcYounitedpayLogger::log(__("Webhook Secret is not defined", WC_YOUNITEDPAY_GATEWAY_LANG));
+                return false;
+            }
+
+            $header = array_change_key_case(getallheaders());
+            if(empty($header["x-yc-datetime"]) || empty($header["x-yc-signature-256"])) {
+                WcYounitedpayLogger::log("Webhook arguments error");
+                return false;
+            }
+
+            $webhook_url = get_site_url() . $_SERVER['REQUEST_URI'];
+            $raw_content = file_get_contents("php://input");
+    
+            $yc_date = $header["x-yc-datetime"];
+            $yc_signature = $header["x-yc-signature-256"];
+            
+            $hmac = hash_hmac('sha256', "$webhook_url|$raw_content|$yc_date" , $webhook_secure_key);
+    
+           if($hmac != $yc_signature) {
+                WcYounitedpayLogger::log("Webhook wrong signature - date: $yc_date - url: $webhook_url - raw: $raw_content - sig: $yc_signature - hmac: $hmac");
+                return false;
+            }else{
+                WcYounitedpayLogger::log("Webhook correct signature - date: $yc_date - url: $webhook_url - raw: $raw_content - sig: $yc_signature - hmac: $hmac");
+            }
+            return true;
+        }catch(\Exception $ex){
+            WcYounitedpayLogger::log("Validate webhook Exception : ".json_encode($ex));
+            return false;
+        }
+    }
+}
