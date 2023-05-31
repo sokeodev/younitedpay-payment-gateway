@@ -1,5 +1,6 @@
 <ul>
     <?php $check = true; ?>
+
     <?php foreach ($possible_maturities as $maturity) {
         if (array_key_exists($maturity, $possible_prices)) { ?>
 
@@ -23,9 +24,9 @@
                     <span><?php echo esc_html__('Your monthly installments will therefore be', WC_YOUNITEDPAY_GATEWAY_LANG); ?> </span>
                     <b>
                         <?php echo sprintf(
-                            esc_html__('%s / month during %s', WC_YOUNITEDPAY_GATEWAY_LANG),
+                            esc_html__('%s / month during %s months', WC_YOUNITEDPAY_GATEWAY_LANG),
                             esc_html($price['monthly_installment_amount_html']),
-                            esc_html($price['maturity_in_months_html'])
+                            esc_html($price['maturity_in_months'])
                         ); ?>
                     </b><br /><br />
                     <em><?php echo esc_html__('A credit commits you and must be repaid. Check your repayment capacity before you commit.', WC_YOUNITEDPAY_GATEWAY_LANG); ?></em>

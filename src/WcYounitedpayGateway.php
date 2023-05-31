@@ -83,7 +83,6 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         $this->title = $this->get_option('title');
         $this->description = $this->get_option('description');
 
-        $this->enabled = $this->get_option('enabled');
         $sandbox = 'yes' === $this->get_option('testmode');
         $this->WcYounitedpayApi = new WcYounitedpayApi(
             $sandbox,
@@ -92,6 +91,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             $this->pre_phone
         );
 
+        $this->enabled = $this->plugin_is_enabled();
         $this->webhook_key = $sandbox ? $this->get_option('test_webhook_key') : $this->get_option('webhook_key');
 
         // Method with all the options fields
@@ -102,7 +102,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             if (!empty($product_page_hook)) {
                 add_action($product_page_hook, array($this, 'render_best_price'));
             }
-
+            
             add_shortcode('younitedpay', array($this, 'render_best_price'));
             add_action('wp_ajax_nopriv_fetch_shortcode_younitedpay', array($this, 'fetch_shortcode_younitedpay'));
             add_action('wp_ajax_fetch_shortcode_younitedpay', array($this, 'fetch_shortcode_younitedpay'));
@@ -135,6 +135,19 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             }
             */
         }
+    }
+
+    public function plugin_is_enabled(){
+        global $wp;
+
+        if( ! empty($wp)){
+            $path = parse_url( $wp->request, PHP_URL_PATH );
+            if ( str_contains( wc_get_checkout_url(), $path ) ) {
+               return $this->is_payment_visible() ? 'yes' : 'no';
+            }
+        }
+
+        return   $this->get_option('enabled');
     }
 
     /**
@@ -406,7 +419,8 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             "possible_prices" => $possible_prices,
             "logo" => $this->logo_filename,
             "visible" => $visible,
-            "ajax" => $ajax
+            "ajax" => $ajax,
+            "lang" => $this->lang
         ]);
 
         if(!$ajax){
@@ -455,6 +469,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
     public function payment_fields()
     {
         if (!$this->is_payment_visible()) {
+            
             return;
         }
 

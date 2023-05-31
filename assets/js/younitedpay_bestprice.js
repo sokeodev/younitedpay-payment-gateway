@@ -1,38 +1,62 @@
 jQuery(function ($) {
     $(document).ready(function () {
 
+        var bestprice_action_list = $(".younitedpay-bestprice-action");
+        var bestprice_action_to_delete = bestprice_action_list.not(function(index) { return index === 0; });
+        bestprice_action_to_delete.remove();
+
+        var bestprice_modal_list = $(".younitedpay-bestprice-modal");
+        var bestprice_modal_to_delete = bestprice_modal_list.not(function(index) { return index === 0; });
+        bestprice_modal_to_delete.remove();
+
+        // Close popup
+        $('body').on('click', '#younitedpay-bestprice-modal .younitedpay-bestprice-close', function () {
+            $("#younitedpay-bestprice-modal").css("display", "none");
+        });
+
+        $(document).on('click', function(event) {
+            var modal = $('#younitedpay-bestprice-modal');
+            if (modal.css('display') === 'flex' && !modal.is(event.target) && modal.has(event.target).length === 0) {
+                $("#younitedpay-bestprice-modal").css("display", "none");
+            }
+        });
+
         //Open modal
-        $('body').on('click', '#bestprice-bloc .bestprice-action', function () {
-            $("#modal-bestprice").css("display", "flex");
-            var maturity = $('body').find('.default_maturity').html();
-            var parent_ul = $('.modal-bestprice-right>div>ul');
-            var maturity_to_select = parent_ul.find('.maturity.maturity_choice_' + maturity);
-            maturity_to_select.closest('li').click();
+        $('body').on('click', '#younitedpay-bestprice-action .younitedpay-bestprice-action-button', function () {
+            setTimeout(
+                function(){ 
+                    $("#younitedpay-bestprice-modal").css("display", "flex");
+                },
+                200
+            );
+            
+            var maturity = $('body').find('.younitedpay-default-maturity').html();
+
+            var choices = $('#younitedpay-bestprice-modal .younitedpay-bestprice-month-choice');
+
+            var maturity_default = choices.find('div[data-maturity-id="'+maturity+'"]');
+            maturity_default.click();   
         });
 
         //event click on maturity li in modal
-        $('body').on('click', '#modal-bestprice .modal-bestprice-right li', function () {
-            $('#modal-bestprice .modal-bestprice-right li').removeClass('checked');
-            $(this).addClass('checked');
-
+        $('body').on('click', '#younitedpay-bestprice-modal .younitedpay-bestprice-month-choice > div', function () {
+            $('#younitedpay-bestprice-modal .younitedpay-bestprice-month-choice > div').removeClass('younitedpay-bestprice-month-checked');
+            $(this).addClass('younitedpay-bestprice-month-checked'); 
+                        
             var maturity = $(this).data("maturity-id");
-            $('.maturity_bloc').css("display", "none");
-
-            //bloc infos
-            $("#maturity_bloc_" + maturity).css("display", "block");
-
+           
             //titre
-            $(".maturity-info").css("display", "none");
-            $("#maturity-info-" + maturity).css("display", "inline-flex");
+            $(".younitedpay-bestprice-price-per-month").css("display", "none");
+            $("#younitedpay-maturity-info-" + maturity).css("display", "inline-flex");
+            
+            //bloc infos
+            $('.younitedpay-bestprice-bloc').css("display", "none");
+            $("#younitedpay-maturity_bloc_" + maturity).css("display", "block");
+
         });
 
         $('body').on('click', '#modal-bestprice-faq', function () {
             window.open("https://www.younited-credit.com/questions-reponses", "_blank")
-        });
-
-        // Close popup
-        $('body').on('click', '#modal-bestprice .modal-bestprice-button button', function () {
-            $("#modal-bestprice").css("display", "none");
         });
 
         $('.variations_form').on('change', 'select', function () {
@@ -76,9 +100,9 @@ jQuery(function ($) {
                     },
                     success: function (response) {
                         if (response) {
-                            $('#bestprice-container').html("");
-                            $('#modal-bestprice').remove();
-                            $('#bestprice-container').html(response);
+                            $('#younitedpay-bestprice-container').html("");
+                            $('#younitedpay-bestprice-modal').remove();
+                            $('#younitedpay-bestprice-container').html(response);
                             document.body.appendChild(document.getElementById('modal-bestprice'));
                         }
                     },
@@ -88,5 +112,7 @@ jQuery(function ($) {
                 });
             }
         });
+
+
     });
 });

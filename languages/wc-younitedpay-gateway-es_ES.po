@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-07-11 18:37+0200\n"
-"PO-Revision-Date: 2023-05-12 14:12+0200\n"
+"PO-Revision-Date: 2023-05-29 11:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Poedit-Basepath: .\n"
 
 msgid "Enable / Disable"
@@ -133,23 +133,26 @@ msgstr "cuotas mensuales con"
 msgid "month"
 msgstr "mes"
 
+msgid "months"
+msgstr "meses"
+
 msgid "Credit amount"
-msgstr "Monto de crédito"
+msgstr "Importe de tu compra"
 
-msgid "+ Credit interest"
-msgstr "+ Intereses de credito"
+msgid "+ Interest on credit"
+msgstr "+ Intereses"
 
-msgid "= total amount due"
-msgstr "= monto total adeudado"
+msgid "= Total amount due"
+msgstr "= Importe total adeudado"
 
 msgid "Fixed APR"
-msgstr "TAE fija"
+msgstr "TAE"
 
-msgid "Fixed borrowing rate"
-msgstr "Tasa fija de préstamo"
+msgid "Fixed lending rate"
+msgstr "TIN"
 
 msgid "A credit commits you and must be repaid. Check your repayment capacity before you commit."
-msgstr "Un crédito te compromete y debe ser reembolsado. Comprueba tu capacidad de pago antes de comprometerte."
+msgstr " "
 
 msgid "A question ? Click here"
 msgstr "Una pregunta ? Haga clic aquí"
@@ -169,6 +172,9 @@ msgstr "Nunca ha sido tan fácil pagar a plazos."
 msgid "Your purchase for"
 msgstr "Tu compra por"
 
+msgid "%s/month"
+msgstr "%s al mes"
+
 msgid "with"
 msgstr "con"
 
@@ -182,22 +188,22 @@ msgid "after 30 days."
 msgstr "después de 30 días."
 
 msgid "Financing amount"
-msgstr "Monto de financiación"
+msgstr "Importe a financiar"
 
 msgid "Cost of financing"
-msgstr "Costo de financiamiento"
+msgstr "Coste de financiación"
 
 msgid "(i.e. fixed APR of %s, fixed lending rate %s)."
-msgstr "(es decir, APR fijo de %s, tasa de préstamo fija %s)."
+msgstr "(es decir, TAE %s, TIN %s)."
 
 msgid "Total amount due"
 msgstr "Importe total adeudado"
 
 msgid "Your monthly installments will therefore be"
-msgstr "Por lo tanto, sus cuotas mensuales serán"
+msgstr "Por lo tanto, tus cuotas mensuales serán de"
 
-msgid "%s / month during %s"
-msgstr "%s / mes durante %s"
+msgid "%s / month during %s months"
+msgstr "%s al mes durante %s meses"
 
 msgid "Pay in %s x"
 msgstr "Pagar en %s x"
@@ -336,3 +342,28 @@ msgstr "Younited Pay - Referencia del contrato %s"
 
 msgid "Q/A"
 msgstr "Sección de preguntas"
+
+msgid "Buy now and pay as you go"
+msgstr "Compra ahora y paga a plazos"
+
+msgid "Start paying in just 30 days"
+msgstr "Financia tu compra al instante"
+
+msgid "(excluding optional insurance)"
+msgstr " "
+
+# bestprice step1
+msgid "At checkout step, select <strong>Younited Pay</strong>"
+msgstr "Selecciona <strong>Younited Pay</strong> como método de pago"
+
+# bestprice step2
+msgid "Choose the repayment <strong>duration</strong>"
+msgstr "Elige los plazos de tu <strong>financiación</strong>"
+
+# bestprice step3
+msgid "<strong>Simply</strong> and <strong>securely</strong> connect your bank account"
+msgstr "Completa tu solicitud en <strong>unos minutos</strong>"
+
+# bestprice step4
+msgid "Receive a response <strong>within seconds</strong>"
+msgstr "Recibe tu respuesta en <strong>segundos</strong>"

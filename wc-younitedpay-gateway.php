@@ -5,7 +5,7 @@
  * Description: YounitedPay Payment Gateway for WooCommerce
  * Author: Sokeo
  * Author URI: https://sokeo.fr
- * Version: 1.2.0
+ * Version: 1.3.0
  * Requires at least: 6.0
  * Tested up to: 6.2
  * Text Domain: wc-younitedpay-gateway
@@ -36,7 +36,7 @@ function wc_younitedpay_add_gateway( $gateways ) {
 
 add_action( 'plugins_loaded', 'wc_younitedpay_add_plugin' );
 function wc_younitedpay_add_plugin() {
-
+	
 	if ( !class_exists( 'WC_Payment_Gateway' ) ) return;
 
 	require_once plugin_dir_path( __FILE__ ) . "src/".WC_YOUNITEDPAY_GATEWAY_CLASS.".php";
@@ -44,7 +44,6 @@ function wc_younitedpay_add_plugin() {
 	//initialise le module pour ajouter les hooks sur la page produit et la page commande ( mode admin )
 	new WcYounitedpayGateway(false);
 }
-
 //langue du module
 WcYounitedpayUtils::load_textdomain();
 new WcYounitedpayPage();

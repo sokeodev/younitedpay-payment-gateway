@@ -3,7 +3,7 @@
 Contributors: younitedpay
 Requires at least: 6.0
 Tested up to: 6.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -20,6 +20,11 @@ To edit the translations, use [Poedit](https://poedit.net/)
 - Open the `.po` file and click on `Update from code`, add/update the translations, then save
 
 == Changelog ==
+
+= 1.3.0 =
+* Design Popup Best Price
+* Checkout Page - Fix on the Spanish Translation
+* Checkout Page - The payment is visible only if there is at least one choice
 
 = 1.2.0 =
 * Fix for plugin deployment

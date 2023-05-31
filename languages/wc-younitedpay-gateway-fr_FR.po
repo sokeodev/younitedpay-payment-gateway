@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-07-11 18:37+0200\n"
-"PO-Revision-Date: 2023-05-12 14:12+0200\n"
+"PO-Revision-Date: 2023-05-29 11:11+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.1\n"
 "X-Poedit-Basepath: .\n"
 
 msgid "Enable / Disable"
@@ -133,19 +133,22 @@ msgstr "fois avec"
 msgid "month"
 msgstr "mois"
 
+msgid "months"
+msgstr "mois"
+
 msgid "Credit amount"
 msgstr "Montant du crédit"
 
-msgid "+ Credit interest"
+msgid "+ Interest on credit"
 msgstr "+ Intérêt du crédit"
 
-msgid "= total amount due"
-msgstr "= montant total dû"
+msgid "= Total amount due"
+msgstr "= Montant total dû"
 
 msgid "Fixed APR"
 msgstr "TAEG fixe"
 
-msgid "Fixed borrowing rate"
+msgid "Fixed lending rate"
 msgstr "Taux débiteur fixe"
 
 msgid "A credit commits you and must be repaid. Check your repayment capacity before you commit."
@@ -168,6 +171,9 @@ msgstr "Cela n'a jamais été aussi simple de payer en plusieurs fois."
 
 msgid "Your purchase for"
 msgstr "Votre achat pour"
+
+msgid "%s/month"
+msgstr "%s/mois"
 
 msgid "with"
 msgstr "avec"
@@ -196,8 +202,8 @@ msgstr "Montant total dû"
 msgid "Your monthly installments will therefore be"
 msgstr "Vos mensualités seront donc de"
 
-msgid "%s / month during %s"
-msgstr "%s / mois pendant %s"
+msgid "%s / month during %s months"
+msgstr "%s / mois pendant %s mois"
 
 msgid "Pay in %s x"
 msgstr "Payez en %s x"
@@ -333,3 +339,28 @@ msgstr "Younited Pay - Référence contrat %s"
 
 msgid "Q/A"
 msgstr "FAQ"
+
+msgid "Buy now and pay as you go"
+msgstr "Achetez maintenant et payez à votre rythme"
+
+msgid "Start paying in just 30 days"
+msgstr "Commencez à payer dans 30 jours seulement"
+
+msgid "(excluding optional insurance)"
+msgstr "(hors assurance facultative)"
+
+# bestprice step1
+msgid "At checkout step, select <strong>Younited Pay</strong>"
+msgstr "Au moment du paiement, Choisissez <strong>Younited Pay</strong>"
+
+# bestprice step2
+msgid "Choose the repayment <strong>duration</strong>"
+msgstr "Choisissez la durée de remboursement"
+
+# bestprice step3
+msgid "<strong>Simply</strong> and <strong>securely</strong> connect your bank account"
+msgstr "Connectez <strong>simplement</strong> et de manière <strong>sécurisée</strong> votre compte bancaire"
+
+# bestprice step4
+msgid "Receive a response <strong>within seconds</strong>"
+msgstr "Recevez une réponse en <strong>quelques secondes</strong>"
