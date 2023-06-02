@@ -20,11 +20,11 @@ class WcYounitedpayFaq{
         
         //TODO Attente formulaire ticket via mantis
         /*$faq_array[] = new WcYounitedpayFaq(
-            esc_html__("J’ai un problème technique, qui contacter ?", WC_YOUNITEDPAY_GATEWAY_LANG), 
+            esc_html__("J’ai un problème technique, qui contacter ?", 'wc-younitedpay-gateway'), 
             esc_html__("Si votre problème concerne le module Wordpress en lui-meme, veuillez-vous réferez à
             XXX (à définir).<br>
             Si votre problème concerne la solution YounitedPay, vous avez la possibilité de créer un
-            ticket de support via votre Back Office YounitedPay", WC_YOUNITEDPAY_GATEWAY_LANG)
+            ticket de support via votre Back Office YounitedPay", 'wc-younitedpay-gateway')
         );*/
 
         $faq_array[] = new WcYounitedpayFaq(
@@ -80,7 +80,7 @@ class WcYounitedpayFaq{
             $available_ips_response.=" <br> $available_ip";
         }
         $faq_array[] = new WcYounitedpayFaq(
-            esc_html__("Modules et sécurité Wordpress", WC_YOUNITEDPAY_GATEWAY_LANG), 
+            esc_html__("Modules et sécurité Wordpress", 'wc-younitedpay-gateway'), 
             $available_ips_response
         );
 

@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1><?php echo esc_html__("YounitedPay Payment Gateway", WC_YOUNITEDPAY_GATEWAY_LANG); ?></h1>
+    <h1><?php echo esc_html__("YounitedPay Payment Gateway", 'wc-younitedpay-gateway'); ?></h1>
 
     <div class="wrap">
 
@@ -8,8 +8,8 @@
         <table class="form-table">
             <tr valign="top">
                 <td class="forminp">
-                    <?php echo esc_html__('Younited Pay is an instant credit solution designed for large purchases, from €300 to €50,000.', WC_YOUNITEDPAY_GATEWAY_LANG ); ?> <br>
-                    <?php echo esc_html__('Your customers repay at their own pace between 10 and 84 months.', WC_YOUNITEDPAY_GATEWAY_LANG ); ?>
+                    <?php echo esc_html__('Younited Pay is an instant credit solution designed for large purchases, from €300 to €50,000.', 'wc-younitedpay-gateway' ); ?> <br>
+                    <?php echo esc_html__('Your customers repay at their own pace between 10 and 84 months.', 'wc-younitedpay-gateway' ); ?>
                 </td>
             </tr>
             

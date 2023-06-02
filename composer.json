@@ -1,6 +1,6 @@
 {
     "name": "younitedpay/wc-younitedpay-gateway",
-    "description": "YounitedPay Payment Gateway For Woocommerce",
+    "description": "YounitedPay Payment Gateway",
     "type": "wordpress-plugin",
     "autoload": {
         "psr-4": {

@@ -16,27 +16,22 @@ class WcYounitedpayUtils {
     public static function render(string $name, array $args = []) {
         extract($args);
 		$file = WC_YOUNITEDPAY_PLUGIN_DIR . "views/$name.php";
-
-        if(!in_array($name, array("bestprice","config","faq","home","menu","payment","support"))){
-            echo "";
-        }else{
-            ob_start();
+        if(in_array($name, array("bestprice","config","faq","home","menu","payment","support"))){
             include($file);
-            //the datas of the templates in the directory 'views' are escaped
-            echo ob_get_clean();
         }
     }
 
-    public static function get_ip(){
-        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }else{
-            $ip = $_SERVER['REMOTE_ADDR'];
+    public static function get_ip() {
+        if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_CLIENT_IP'] ) );
+        } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
+        } else {
+            $ip = sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) );
         }
         return $ip;
     }
+    
 
 
     /*
@@ -98,13 +93,13 @@ class WcYounitedpayUtils {
             return;
         }
 
-        load_textdomain( WC_YOUNITEDPAY_GATEWAY_LANG, plugin_dir_path( __FILE__ ).'/../languages/'.WC_YOUNITEDPAY_GATEWAY_LANG.'-'.$current_lang.'.mo', $current_lang);
+        load_textdomain( 'wc-younitedpay-gateway', plugin_dir_path( __FILE__ ).'/../languages/'.'wc-younitedpay-gateway'.'-'.$current_lang.'.mo', $current_lang);
     }
 
     public static function validate_webhook($webhook_secure_key){
         try{
             if(empty($webhook_secure_key)){
-                WcYounitedpayLogger::log(__("Webhook Secret is not defined", WC_YOUNITEDPAY_GATEWAY_LANG));
+                WcYounitedpayLogger::log(__("Webhook Secret is not defined", 'wc-younitedpay-gateway'));
                 return false;
             }
 
@@ -114,11 +109,11 @@ class WcYounitedpayUtils {
                 return false;
             }
 
-            $webhook_url = get_site_url() . $_SERVER['REQUEST_URI'];
-            $raw_content = file_get_contents("php://input");
+            $webhook_url = sanitize_url(get_site_url() . $_SERVER['REQUEST_URI']);
+            $raw_content = sanitize_text_field(file_get_contents("php://input"));
     
-            $yc_date = $header["x-yc-datetime"];
-            $yc_signature = $header["x-yc-signature-256"];
+            $yc_date = sanitize_text_field($header["x-yc-datetime"]);
+            $yc_signature = sanitize_text_field($header["x-yc-signature-256"]);
             
             $hmac = hash_hmac('sha256', "$webhook_url|$raw_content|$yc_date" , $webhook_secure_key);
     

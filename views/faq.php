@@ -46,7 +46,7 @@
 </style>
 
 <div class="wrap">
-    <h1><?php echo esc_html__("YounitedPay Payment Gateway", WC_YOUNITEDPAY_GATEWAY_LANG); ?></h1>
+    <h1><?php echo esc_html__("YounitedPay Payment Gateway", 'wc-younitedpay-gateway'); ?></h1>
 
     <div class="wrap">
         <?php include __DIR__ . "/menu.php"; ?>

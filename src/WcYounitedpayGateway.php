@@ -3,7 +3,6 @@
 use Younitedpay\WcYounitedpayGateway\WcYounitedpayLogger;
 use Younitedpay\WcYounitedpayGateway\WcYounitedpayAdminForm;
 use Younitedpay\WcYounitedpayGateway\WcYounitedpayApi;
-use Younitedpay\WcYounitedpayGateway\WcYounitedpayFaq;
 use Younitedpay\WcYounitedpayGateway\WcYounitedpayUtils;
 
 class WcYounitedpayGateway extends WC_Payment_Gateway
@@ -69,7 +68,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         $this->icon = plugins_url("../assets/img/$this->logo_filename", __FILE__); // URL of the icon that will be displayed on checkout page near your gateway name
         $this->has_fields = true; // in case you need a custom credit card form
         $this->method_title = 'YounitedPay';
-        $this->method_description = esc_html__("Offer your customers to pay up to 36 times", WC_YOUNITEDPAY_GATEWAY_LANG);
+        $this->method_description = esc_html__("Offer your customers to pay up to 36 times", 'wc-younitedpay-gateway');
 
         $this->possible_maturities = explode(',', str_replace(' ', '', $this->get_option('possible_maturities')));
 
@@ -175,13 +174,13 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         }
         sort($possible_maturities_valid);
         if ($erreur_format) {
-            $this->add_error(__("Multiples maturities : a maturity must be a number and even. Example : 4,8,12,24,36", WC_YOUNITEDPAY_GATEWAY_LANG));
+            $this->add_error(__("Multiples maturities : a maturity must be a number and even. Example : 4,8,12,24,36", 'wc-younitedpay-gateway'));
         }
 
         //Contrôle champ min / max de chaque échéance valide
         foreach ($possible_maturities_valid as $maturity) {
 
-            $mes_err_pre = sprintf(__("Maturity %s month : ", WC_YOUNITEDPAY_GATEWAY_LANG), $maturity);
+            $mes_err_pre = sprintf(__("Maturity %s month : ", 'wc-younitedpay-gateway'), $maturity);
 
             if (isset($_POST[$this->plugin_id . $this->id . '_' . "min_amount_$maturity"])) {
                 $min_amount = sanitize_text_field($_POST[$this->plugin_id . $this->id . '_' . "min_amount_$maturity"]);
@@ -199,7 +198,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             if (empty($min_amount) || empty($max_amount)) {
                 $this->add_error(
                     $mes_err_pre .
-                        esc_html__("The minimum amount and maximum amount must be defined to activate the maturity.", WC_YOUNITEDPAY_GATEWAY_LANG)
+                        esc_html__("The minimum amount and maximum amount must be defined to activate the maturity.", 'wc-younitedpay-gateway')
                 );
             }
 
@@ -207,12 +206,12 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
                 if (!is_numeric($min_amount)) {
                     $this->add_error(
                         $mes_err_pre .
-                            esc_html__("Minimum amount must be numeric.", WC_YOUNITEDPAY_GATEWAY_LANG)
+                            esc_html__("Minimum amount must be numeric.", 'wc-younitedpay-gateway')
                     );
                 } else if ($min_amount < 0) {
                     $this->add_error(
                         $mes_err_pre .
-                            esc_html__("The minimum amount must be greater than or equal to 0.", WC_YOUNITEDPAY_GATEWAY_LANG)
+                            esc_html__("The minimum amount must be greater than or equal to 0.", 'wc-younitedpay-gateway')
                     );
                 }
             }
@@ -221,12 +220,12 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
                 if (!is_numeric($max_amount)) {
                     $this->add_error(
                         $mes_err_pre .
-                            esc_html__("Maximum amount must be numeric.", WC_YOUNITEDPAY_GATEWAY_LANG)
+                            esc_html__("Maximum amount must be numeric.", 'wc-younitedpay-gateway')
                     );
                 } else if ($max_amount <= $min_amount) {
                     $this->add_error(
                         $mes_err_pre .
-                            esc_html__("The maximum amount must be greater than the minimum amount.", WC_YOUNITEDPAY_GATEWAY_LANG)
+                            esc_html__("The maximum amount must be greater than the minimum amount.", 'wc-younitedpay-gateway')
                     );
                 }
             }
@@ -254,7 +253,6 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             "behaviour_fields" => $this->generate_settings_html($admin_form->behaviour_fields($this->possible_maturities), false),
             "appearance_fields" => $this->generate_settings_html($admin_form->appearance_fields(), false),
             "option" => $option,
-            "faq_array" => $option == "faq" ? WcYounitedpayFaq::get_list() : [],
             "api_keys_is_defined" => $this->WcYounitedpayApi->api_keys_is_defined()
         ]);
     }
@@ -324,6 +322,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         }
 
         $ip = WcYounitedpayUtils::get_ip();
+        
         /* WHITELIST */
         $whitelist_enable = $this->get_option('whitelist_enable');
         $whitelist = explode(',', str_replace(' ', '', $this->get_option('whitelist')));
@@ -339,6 +338,9 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         return $this->has_maturities_enabled($amount);
     }
 
+    /**
+     * Fetch shortcode
+     */
     public function fetch_shortcode_younitedpay()
     {
         if (isset($_POST['price'])) {
@@ -346,13 +348,11 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             if (is_numeric($price_att) && filter_var($price_att, FILTER_VALIDATE_FLOAT) !== false) {
                 // ob_start and ob_get_clean will prevent the shortcode from displaying and instead will return the value to the $html variable.
                 ob_start();
-                echo do_shortcode("[younitedpay price='$price_att' ajax='true']");
-                $html = ob_get_clean();
+                do_shortcode("[younitedpay price='$price_att' ajax='true']");
+                wp_send_json_success(ob_get_clean());
             } else {
-                $html = "";
+                wp_send_json_success("");
             }
-
-            wp_send_json_success($html);
         }
     }
 
@@ -530,15 +530,15 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
     {
 
         if (empty($_POST['billing_first_name'])) {
-            wc_add_notice(__("The first name is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The first name is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         if (empty($_POST['billing_last_name'])) {
-            wc_add_notice(__("The name is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The name is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         if (empty($_POST['billing_phone'])) {
-            wc_add_notice(__("The phone is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The phone is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         
@@ -546,7 +546,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         if (!preg_match('/^(?:(?:\+|00)' . $this->pre_phone . '|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/', sanitize_text_field($_POST['billing_phone']))) {
             wc_add_notice(
                 sprintf(
-                    esc_html__("The phone is invalid (accepted formats : 0601020304 / 00%s601020304 / +%s601020304)", WC_YOUNITEDPAY_GATEWAY_LANG),
+                    esc_html__("The phone is invalid (accepted formats : 0601020304 / 00%s601020304 / +%s601020304)", 'wc-younitedpay-gateway'),
                     $this->pre_phone,
                     $this->pre_phone
                 ),
@@ -555,19 +555,19 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
             return false;
         }
         if (empty($_POST['billing_email'])) {
-            wc_add_notice(__("The mail is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The mail is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         if (empty($_POST['billing_address_1'])) {
-            wc_add_notice(__("The address is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The address is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         if (empty($_POST['billing_postcode'])) {
-            wc_add_notice(__("The postal code is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The postal code is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
         if (empty($_POST['billing_city'])) {
-            wc_add_notice(__("The city is required", WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__("The city is required", 'wc-younitedpay-gateway'), 'error');
             return false;
         }
 
@@ -581,13 +581,13 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
     {
         $mes_err_maturity = "Please select the number of payments you wish to make with YounitedPay";
         if ( empty($_POST['maturity'])) {
-            wc_add_notice(__($mes_err_maturity, WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__($mes_err_maturity, 'wc-younitedpay-gateway'), 'error');
             return;
         }
 
         $maturity = sanitize_text_field($_POST['maturity']);
         if ( !is_numeric( $maturity ) ) {
-            wc_add_notice(__($mes_err_maturity, WC_YOUNITEDPAY_GATEWAY_LANG), 'error');
+            wc_add_notice(__($mes_err_maturity, 'wc-younitedpay-gateway'), 'error');
             return;
         }
 
@@ -637,7 +637,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         switch (true) {
             case str_contains($path, 'success'):
                 // Confirm to YounitedPay
-                $order->update_meta_data('_younitedpay_contract_reference', $raw_content->{'contractReference'});
+                $order->update_meta_data('_younitedpay_contract_reference', sanitize_text_field($raw_content->{'contractReference'}));
                 $order->save();
                 $confirm = $this->WcYounitedpayApi->confirm_contract($order_id);
                 if ($confirm) {
@@ -662,7 +662,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         if ($new_status != null && $current_status != $new_status) {
             WcYounitedpayLogger::log("webhook_younitedpay($order_id) - Update status - $current_status -> $new_status");
             $order->update_meta_data('_younitedpay_status_changed_disable', true);
-            $order->update_status($new_status, esc_html__("Status changed by webhook of Younited Pay", WC_YOUNITEDPAY_GATEWAY_LANG));
+            $order->update_status($new_status, esc_html__("Status changed by webhook of Younited Pay", 'wc-younitedpay-gateway'));
             $order->save();
         } else {
             WcYounitedpayLogger::log("webhook_younitedpay($order_id) - No change status - $current_status -> $new_status");
@@ -750,7 +750,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         }
 
         echo "<div class='notice notice-info is-dismissible'><p>" .
-            sprintf(__("Younited Pay - Contract reference %s", WC_YOUNITEDPAY_GATEWAY_LANG), $contract_reference)
+            sprintf(__("Younited Pay - Contract reference %s", 'wc-younitedpay-gateway'), esc_html__($contract_reference))
             . "</p></div>";
     }
 
@@ -834,7 +834,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
 
         if ($old_status == 'refunded' || $old_status == 'cancelled') {
             $order_status_valid = false;
-            $msg_error = esc_html__("This status is not editable. - ", WC_YOUNITEDPAY_GATEWAY_LANG);
+            $msg_error = esc_html__("This status is not editable. - ", 'wc-younitedpay-gateway');
         } else if ($old_status == 'processing') {
             if ($new_status == 'completed') {
                 $order_status_valid = $this->WcYounitedpayApi->activate_contract($order_id);
@@ -842,24 +842,24 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
                 $order_status_valid = $this->WcYounitedpayApi->cancel_contract($order_id);
             } else {
                 $order_status_valid = false;
-                $msg_error = esc_html__("This status is not editable. - ", WC_YOUNITEDPAY_GATEWAY_LANG);
+                $msg_error = esc_html__("This status is not editable. - ", 'wc-younitedpay-gateway');
             }
             if (!$order_status_valid && $msg_error == "") {
-                $msg_error = esc_html__("Error Call Younited Pay Api - Rollback Status - ", WC_YOUNITEDPAY_GATEWAY_LANG);
+                $msg_error = esc_html__("Error Call Younited Pay Api - Rollback Status - ", 'wc-younitedpay-gateway');
             }
         } else if ($old_status == 'completed') {
             if ($new_status == 'refunded') {
                 $order_status_valid = $this->WcYounitedpayApi->withdraw_contract($order_id);
                 if (!$order_status_valid) {
-                    $msg_error = esc_html__("Error Call Younited Pay Api - Rollback Status - ", WC_YOUNITEDPAY_GATEWAY_LANG);
+                    $msg_error = esc_html__("Error Call Younited Pay Api - Rollback Status - ", 'wc-younitedpay-gateway');
                 }
             } else {
                 $order_status_valid = false;
-                $msg_error = sprintf(__("The completed status cannot be changed by the %s status - ", WC_YOUNITEDPAY_GATEWAY_LANG), $new_status);
+                $msg_error = sprintf(__("The completed status cannot be changed by the %s status - ", 'wc-younitedpay-gateway'), $new_status);
             }
         } else {
             $order_status_valid = false;
-            $msg_error = esc_html__("This status is not editable. - ", WC_YOUNITEDPAY_GATEWAY_LANG);
+            $msg_error = esc_html__("This status is not editable. - ", 'wc-younitedpay-gateway');
         }
 
         if (!$order_status_valid) {

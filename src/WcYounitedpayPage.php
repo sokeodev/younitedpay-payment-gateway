@@ -43,7 +43,7 @@ class WcYounitedpayPage {
         if($option == "support"){
             $args['sok_lang'] = get_locale(); 
             $args['sok_config'] = base64_encode(json_encode(get_option("woocommerce_younitedpay-gateway_settings")));
-            $args['sok_project'] = base64_encode(WC_YOUNITEDPAY_GATEWAY_LANG);
+            $args['sok_project'] = base64_encode('wc-younitedpay-gateway');
             $args['sok_log'] = base64_encode(WcYounitedpayLogger::getContent());
             $args['sok_customer_id'] = $customer_id;
             $args['sok_hmac'] = hash_hmac('sha256', "b3b621a0-0eu9-45ec-b700-677672c8c752" , $args['sok_customer_id']."|".$args['sok_lang']."|".$args['sok_project']."|".get_site_url());

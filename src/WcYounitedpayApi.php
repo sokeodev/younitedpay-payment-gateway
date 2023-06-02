@@ -62,16 +62,16 @@ class WcYounitedpayApi {
 
         $token = null;
         // Get token from session is as not expired (minus 60 seconds in case of...)
-        if ( isset( $_SESSION['get_token']['expires_at'] ) AND time() < ($_SESSION['get_token']['expires_at'] - 60) AND isset( $_SESSION['get_token']['access_token'] ) ) {
-            $token = $_SESSION['get_token']['access_token'];
+        if ( isset( $_SESSION['get_token']['expires_at'] ) AND time() < (sanitize_text_field($_SESSION['get_token']['expires_at']) - 60) AND isset( $_SESSION['get_token']['access_token'] ) ) {
+            $token = sanitize_text_field($_SESSION['get_token']['access_token']);
             WcYounitedpayLogger::log( 'get_token() - Get token from SESSION' );
         } else {
             // API REQUEST to get a Bearer Token
             $response = wp_remote_post( $this->bearer, [
                 'body' => [
                     'grant_type' => 'client_credentials',
-                    'client_id' => $this->publishable_key,
-                    'client_secret' => $this->private_key,
+                    'client_id' => sanitize_text_field($this->publishable_key),
+                    'client_secret' => sanitize_text_field($this->private_key),
                     'scope' => 'api://younited-pay/.default'
                 ],
                 'sslverify' => is_ssl() ? true : false,
@@ -83,13 +83,16 @@ class WcYounitedpayApi {
             if ( !is_wp_error( $response ) ) {
                 $body = json_decode( $response['body'], true );
                 if ( isset ( $body['access_token'] ) ) {
-                    $token = $body['access_token'];
+                    $token = sanitize_text_field($body['access_token']);
+                    $expires_in = sanitize_text_field($body['expires_in']);
+
                     $_SESSION['get_token'] = [
-                        'expires_in' => $body['expires_in'], 
+                        'expires_in' => $expires_in, 
                         'created' => time(), 
-                        'expires_at' => (time() + $body['expires_in']),
-                        'access_token' => $body['access_token']
+                        'expires_at' => (time() + $expires_in),
+                        'access_token' => $token
                     ];
+
                 }
             }
             //WcYounitedpayLogger::log( 'get_token() - $response : ' . json_encode( $response ) );
@@ -216,7 +219,7 @@ class WcYounitedpayApi {
         $response = wp_remote_request( $this->api . '/api/1.0/Contract/' . $contract_reference . '/withdraw', 
         [
             'method' => 'PATCH',
-            'body' => json_encode(['amount' => $amount_withdram]),
+            'body' => json_encode(['amount' => sanitize_text_field($amount_withdram)]),
             'headers' => [
                 'Authorization' => 'Bearer ' . $this->get_token(), // Get a bearer token
                 'Content-type' => 'application/json'
@@ -301,8 +304,6 @@ class WcYounitedpayApi {
             return false;
         }
 
-        $agentEmailAddress = bloginfo('admin_email');
-
         $data = [
             "requestedMaturity" => $maturity,
             "personalInformation" => [
@@ -326,16 +327,16 @@ class WcYounitedpayApi {
                 "items" => $items
             ],
             "merchantUrls" => [
-                "onGrantedWebhookUrl" => $site_url . "/wc-api/younited-pay-success?order-id=" . $order_id,
-                "onCanceledWebhookUrl" => $site_url . "/wc-api/younited-pay-canceled?order-id=" . $order_id,
-                "onWithdrawnWebhookUrl" => $site_url . "/wc-api/younited-pay-withdrawn?order-id=" . $order_id,
+                "onGrantedWebhookUrl" => sanitize_url($site_url . "/wc-api/younited-pay-success?order-id=" . $order_id),
+                "onCanceledWebhookUrl" => sanitize_url($site_url . "/wc-api/younited-pay-canceled?order-id=" . $order_id),
+                "onWithdrawnWebhookUrl" => sanitize_url($site_url . "/wc-api/younited-pay-withdrawn?order-id=" . $order_id),
                 "onApplicationSucceededRedirectUrl" => $order->get_checkout_order_received_url(),
-                "onApplicationFailedRedirectUrl" => wc_get_checkout_url() . '?younited-msg='.urlencode(__('Contract cancellation', WC_YOUNITEDPAY_GATEWAY_LANG ))
+                "onApplicationFailedRedirectUrl" => sanitize_url(wc_get_checkout_url() . '?younited-msg='.urlencode(__('Contract cancellation', 'wc-younitedpay-gateway' )))
             ],
             "merchantOrderContext" => [
                 "channel" => "ONLINE", // ONLINE or PHYSICAL
-                "shopCode" => "",
-                "agentEmailAddress" => $agentEmailAddress,
+                "shopCode" => "ONLINE",
+                "agentEmailAddress" => null,
                 "merchantReference" => ""
             ]
         ];
@@ -378,7 +379,7 @@ class WcYounitedpayApi {
             }
         }        
 
-        wc_add_notice( esc_html__( 'A technical error has occurred', WC_YOUNITEDPAY_GATEWAY_LANG ), 'error' );
+        wc_add_notice( esc_html__( 'A technical error has occurred', 'wc-younitedpay-gateway' ), 'error' );
 
         $order->update_status( 'failed' );
         $order->save();
@@ -416,6 +417,6 @@ class WcYounitedpayApi {
         if ( ! $order ) {
             return false;
         }
-        return $order->get_meta('_younitedpay_contract_reference');
+        return sanitize_text_field($order->get_meta('_younitedpay_contract_reference'));
     }
 }

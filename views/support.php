@@ -1,5 +1,5 @@
 <div class="wrap">
-    <h1><?php echo esc_html__("YounitedPay Payment Gateway", WC_YOUNITEDPAY_GATEWAY_LANG); ?></h1>
+    <h1><?php echo esc_html__("YounitedPay Payment Gateway", 'wc-younitedpay-gateway'); ?></h1>
 
     <div class="wrap">
 
@@ -19,11 +19,11 @@
         <table class="form-table">
             <tr valign="top">
                 <td class="forminp">
-                    <h2><?php echo esc_html__('A question about Younited Pay?', WC_YOUNITEDPAY_GATEWAY_LANG ); ?></h2>
-                    <span><?php echo esc_html__('If your question concerns the Younited Pay solution or your business relationship with Younited,', WC_YOUNITEDPAY_GATEWAY_LANG ); ?></span>
+                    <h2><?php echo esc_html__('A question about Younited Pay?', 'wc-younitedpay-gateway' ); ?></h2>
+                    <span><?php echo esc_html__('If your question concerns the Younited Pay solution or your business relationship with Younited,', 'wc-younitedpay-gateway' ); ?></span>
                     <br>
-                    <span><?php echo esc_html__('you can reach a technical team or your account manager from your YounitedPay Back Office via our ticketing system.', WC_YOUNITEDPAY_GATEWAY_LANG ); ?></span><br><br>
-                    <span><?php echo esc_html__('If your question concerns technical difficulties with the WooCommerce module, please contact our support team via the button below.', WC_YOUNITEDPAY_GATEWAY_LANG ); ?></span>                    
+                    <span><?php echo esc_html__('you can reach a technical team or your account manager from your YounitedPay Back Office via our ticketing system.', 'wc-younitedpay-gateway' ); ?></span><br><br>
+                    <span><?php echo esc_html__('If your question concerns technical difficulties with the WooCommerce module, please contact our support team via the button below.', 'wc-younitedpay-gateway' ); ?></span>                    
                 </td>
             </tr>
         </table>
@@ -31,7 +31,7 @@
             <button 
                 onclick="(function(){ document.getElementById('younited_support_form').submit(); })()"
                 class="button-primary woocommerce-save-button">            
-                <?php echo esc_html__('Contact Support', WC_YOUNITEDPAY_GATEWAY_LANG ); ?>
+                <?php echo esc_html__('Contact Support', 'wc-younitedpay-gateway' ); ?>
             </button>
         </p>
     </div>               
