@@ -1,11 +1,3 @@
-<?php
-$steps = [];
-$steps[] = "At checkout step, select <strong>Younited Pay</strong>";
-$steps[] = "Choose the repayment <strong>duration</strong>";
-$steps[] = "<strong>Simply</strong> and <strong>securely</strong> connect your bank account";
-$steps[] = "Receive a response <strong>within seconds</strong>";
-?>
-
 <?php if (!$ajax) { ?><div id="younitedpay-bestprice-container"><?php } ?>
     <?php if ($visible) { ?>
 
@@ -21,14 +13,25 @@ $steps[] = "Receive a response <strong>within seconds</strong>";
                 </div>
                 <div class="younitedpay-bestprice-steps">
 
-                    <?php foreach ($steps as $step_i => $step) : ?>
-                        <div>
-                            <div>
-                                <div><?php echo esc_html__($step_i + 1); ?></div>
-                            </div>
-                            <span><span><?php echo wp_kses(__($step, 'wc-younitedpay-gateway'), array('strong' => array())); ?></span></span>
-                        </div>
-                    <?php endforeach; ?>
+                    <div>
+                        <div><div>1</div></div>
+                        <span><span><?php echo wp_kses(__('At checkout step, select <strong>Younited Pay</strong>', 'wc-younitedpay-gateway'), array('strong' => array())); ?></span></span>
+                    </div>
+
+                    <div>
+                        <div><div>2</div></div>
+                        <span><span><?php echo wp_kses(__('Choose the repayment <strong>duration</strong>', 'wc-younitedpay-gateway'), array('strong' => array())); ?></span></span>
+                    </div>
+
+                    <div>
+                        <div><div>3</div></div>
+                        <span><span><?php echo wp_kses(__('<strong>Simply</strong> and <strong>securely</strong> connect your bank account', 'wc-younitedpay-gateway'), array('strong' => array())); ?></span></span>
+                    </div>
+
+                    <div>
+                        <div><div>4</div></div>
+                        <span><span><?php echo wp_kses(__('Receive a response <strong>within seconds</strong>', 'wc-younitedpay-gateway'), array('strong' => array())); ?></span></span>
+                    </div>
                 </div>
                 <div class="younitedpay-bestprice-logo">
                     <img src="<?php echo esc_url(plugins_url("../assets/img/logo-youpay-black.svg", __FILE__)); ?>" alt="youpay">

@@ -174,7 +174,7 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
         }
         sort($possible_maturities_valid);
         if ($erreur_format) {
-            $this->add_error(__("Multiples maturities : a maturity must be a number and even. Example : 4,8,12,24,36", 'wc-younitedpay-gateway'));
+            $this->add_error(esc_html__("Multiples maturities : a maturity must be a number and even. Example : 4,8,12,24,36", 'wc-younitedpay-gateway'));
         }
 
         //Contrôle champ min / max de chaque échéance valide
@@ -344,9 +344,8 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
     public function fetch_shortcode_younitedpay()
     {
         if (isset($_POST['price'])) {
-            $price_att = esc_attr(sanitize_text_field($_POST['price']));
+            $price_att = sanitize_text_field($_POST['price']);
             if (is_numeric($price_att) && filter_var($price_att, FILTER_VALIDATE_FLOAT) !== false) {
-                // ob_start and ob_get_clean will prevent the shortcode from displaying and instead will return the value to the $html variable.
                 ob_start();
                 do_shortcode("[younitedpay price='$price_att' ajax='true']");
                 wp_send_json_success(ob_get_clean());
@@ -579,15 +578,14 @@ class WcYounitedpayGateway extends WC_Payment_Gateway
     */
     public function process_payment($order_id)
     {
-        $mes_err_maturity = "Please select the number of payments you wish to make with YounitedPay";
         if ( empty($_POST['maturity'])) {
-            wc_add_notice(__($mes_err_maturity, 'wc-younitedpay-gateway'), 'error');
+            wc_add_notice(__("Please select the number of payments you wish to make with YounitedPay", 'wc-younitedpay-gateway'), 'error');
             return;
         }
 
         $maturity = sanitize_text_field($_POST['maturity']);
         if ( !is_numeric( $maturity ) ) {
-            wc_add_notice(__($mes_err_maturity, 'wc-younitedpay-gateway'), 'error');
+            wc_add_notice(__("Please select the number of payments you wish to make with YounitedPay", 'wc-younitedpay-gateway'), 'error');
             return;
         }
 
