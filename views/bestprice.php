@@ -52,7 +52,7 @@
                             <?php echo esc_html__('Your purchase for', 'wc-younitedpay-gateway'); ?>
 
                             <?php foreach ($possible_prices as $maturity => $maturity_v) { ?>
-                                <span class="younitedpay-bestprice-price-per-month" id="younitedpay-maturity-info-<?php echo esc_html($maturity); ?>">
+                                <span class="younitedpay-bestprice-price-per-month" id="younitedpay-maturity-info-<?php echo esc_attr($maturity); ?>">
                                     <?php echo sprintf(
                                         esc_html__('%s/month', 'wc-younitedpay-gateway'),
                                         esc_html($maturity_v["monthly_installment_amount_html"])

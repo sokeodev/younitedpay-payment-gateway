@@ -10,7 +10,7 @@
 
             <li class="younitedpay-checkout-details <?php if ($check) { ?>checked<?php } ?>" <?php if (!$check) { ?>style="margin-top: 0.3rem!important;" <?php } ?>>
                 <input required="required" id="payment_method_<?php echo esc_attr($maturity); ?>" type="<?php if ($are_many_offers) { ?>radio<?php } else { ?>hidden<?php } ?>" name="maturity" value="<?php echo esc_attr($maturity); ?>" data-order_button_text="" <?php if ($check) { ?>checked="checked" <?php } ?>>
-                <label for="payment_method_<?php echo esc_attr($maturity); ?>"><?php echo sprintf(__('Pay in %s x', 'wc-younitedpay-gateway'), $maturity); ?></label>
+                <label for="payment_method_<?php echo esc_attr($maturity); ?>"><?php echo sprintf(__('Pay in %s x', 'wc-younitedpay-gateway'), esc_html($maturity)); ?></label>
                 <p>
                     <span><?php echo esc_html__('Financing amount', 'wc-younitedpay-gateway'); ?> : </span><b><?php echo esc_html($price['requested_amount_html']); ?></b>.<br />
                     <span><?php echo esc_html__('Cost of financing', 'wc-younitedpay-gateway'); ?> : </span><b><?php echo esc_html($price['interests_total_amount_html']); ?></b>
